@@ -8,13 +8,23 @@
 	<artifactId>QuartzTaskScheduler</artifactId>
 	<packaging>jar</packaging>
 	<version>0.1-SNAPSHOT</version>
-	<name></name>
+	<name>quartz</name>
+	<url>http://maven.apache.org</url>
+	
+	<!-- JBoss repository for Hibernate -->
+	<repositories>
+		<repository>
+			<id>JBoss repository</id>
+			<url>http://repository.jboss.org/nexus/content/groups/public/</url>
+		</repository>
+	</repositories>
 	
 	<properties>
-		<!-- SPRING -->
-		<org.springframework.version>4.1.6.RELEASE</org.springframework.version>
-		
+		<java.version>1.7</java.version>
+		<org.springframework.version>4.1.6.RELEASE</org.springframework.version>		
 		<quartz.version>2.2.1</quartz.version>
+		<db.version>1.4.191</db.version>
+		<hibernate.version>4.3.8.Final</hibernate.version>
 	</properties>
 
 	<dependencies>
@@ -44,6 +54,13 @@
 		
 		<dependency>
 			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 			<version>${org.springframework.version}</version>
 			<exclusions>
@@ -54,11 +71,28 @@
 			</exclusions>			
 		</dependency>
 	
+	<!-- QUARTZ -->
 		<dependency>
 		    <groupId>org.quartz-scheduler</groupId>
 		    <artifactId>quartz</artifactId>
 		    <version>${quartz.version}</version>
-		</dependency>	
+		</dependency>
+		
+		<!-- H2 database -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>${db.version}</version>
+		</dependency>
+		
+		<!-- HIBERNATE -->
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-entitymanager</artifactId>
+		    <version>${hibernate.version}</version>
+		</dependency>
+
+					
 	</dependencies>
 
 	<build>
@@ -73,7 +107,7 @@
 							<mainClass>com.quartz.scheduler.Main</mainClass>
 							<addClasspath>true</addClasspath>							
 						</manifest>
-					</archive>
+					</archive>					
 				</configuration>
 				<executions>
 					<execution>
@@ -100,9 +134,18 @@
 				</executions>
 				<configuration>
 					<excludeArtifactIds>launch4j-plugin</excludeArtifactIds>
-					<outputDirectory>target</outputDirectory>
+					<outputDirectory>target/lib</outputDirectory>
 				</configuration>
-			</plugin>
+			</plugin>	
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>		
 		</plugins>
 	</build>
 </project>

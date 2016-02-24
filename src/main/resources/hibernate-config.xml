@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns="http://www.springframework.org/schema/beans" 
+		xmlns:c="http://www.springframework.org/schema/c"
+		xmlns:p="http://www.springframework.org/schema/p"
+		xmlns:util="http://www.springframework.org/schema/util"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+						    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+							http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+     
+ 	<context:property-placeholder location="jdbc.properties"/>
+		
+    <bean id="entityManagerFactory"	class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+		<property name="jpaProperties">
+			<props>	
+				<prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
+                <prop key="hibernate.hbm2ddl.auto">create</prop>
+                <prop key="hibernate.show_sql">true</prop> 
+			</props>
+		</property>
+		<property name="dataSource" ref="quartzDataSource" />
+		<property name="packagesToScan"	value="com.quartz.datamodel" />
+	</bean>	
+	
+	<tx:annotation-driven transaction-manager="quartzTransactionManager" />
+	<bean id="quartzTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<tx:advice id="quartzTxAdvice" transaction-manager="quartzTransactionManager">
+		<tx:attributes>
+			<tx:method name="*" propagation="REQUIRED"  rollback-for="java.lang.Throwable"/>
+		</tx:attributes>
+	</tx:advice>
+
+    <bean id="quartzDataSource" class="org.h2.jdbcx.JdbcDataSource">
+        <property name="url" value="jdbc:h2:mem:testdb"/>
+        <property name="user" value="sa"/>
+        <property name="password" value=""/>
+    </bean>
+</beans>
