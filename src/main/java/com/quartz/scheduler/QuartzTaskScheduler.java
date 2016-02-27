@@ -3,9 +3,16 @@ package com.quartz.scheduler;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.quartz.service.QuartzService;
+
 public class QuartzTaskScheduler {
 
 	private static boolean isRunning = false;
+
+	@Autowired
+	private QuartzService quartzService;
 
 	public void execute() throws Exception {
 		try {
@@ -16,7 +23,7 @@ public class QuartzTaskScheduler {
 				isRunning = true;
 			}
 
-			showCurrentTime();
+			runSqlQueries();
 
 		} finally {
 
@@ -26,10 +33,11 @@ public class QuartzTaskScheduler {
 		}
 	}
 
-	private void showCurrentTime() {
+	private void runSqlQueries() {
 		Date date = new Date();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 		System.out.println(dateFormat.format(date));
+		quartzService.executeSqlQueries();
 	}
 
 }

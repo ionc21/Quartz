@@ -12,9 +12,20 @@
 						    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
 							http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-							
-	<context:property-placeholder location="quartz-spring.properties" />	
 	
+	
+	<context:component-scan base-package="com.quartz" />
+							
+      <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:quartz-spring.properties</value>
+                <value>classpath:jdbc.properties</value>
+            </list>
+        </property> 
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+    </bean>
+    
     <!-- ================================================================== -->
 	<!-- JOBS INFRASTRUCTURE -->
 	<!-- ================================================================== -->
@@ -25,23 +36,20 @@
         p:triggers-ref="jobSchedulerTriggerList" />
             
     <util:list list-class="java.util.ArrayList" id="jobSchedulerTriggerList">
-		<ref bean="insertDataJobTrigger"/>		  	
+		<ref bean="runQueriesJobTrigger"/>		  	
     </util:list>
 
-	<!-- ================================================================== -->
-	<!-- REMOVE PRODUCTION DATA  JOB										-->
-	<!-- ================================================================== -->
-	<bean id="insertDataJobTrigger"
+	<bean id="runQueriesJobTrigger"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
-		p:jobDetail-ref="insertDataJobDetails"
+		p:jobDetail-ref="runQueriesJobDetails"
 		p:cronExpression="${quartz.cron.scheduler.pattern}" />
  
-	<bean id="insertDataJobDetails" 
+	<bean id="runQueriesJobDetails" 
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
-		p:targetObject-ref="insertDataJob"
+		p:targetObject-ref="runQueriesJob"
 		p:targetMethod="execute"/>
        
-	<bean id="insertDataJob" class="com.quartz.scheduler.QuartzTaskScheduler" />
+	<bean id="runQueriesJob" class="com.quartz.scheduler.QuartzTaskScheduler" />
 	
 	<import resource="hibernate-config.xml"/>
 </beans>
