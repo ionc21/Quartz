@@ -30,8 +30,8 @@ public class WriteToCsv {
 		logger.debug("Write to file");
 		String path = System.getProperty("user.home") + "\\Desktop\\";
 		File file = new File(path + "query_result_".concat(df.format(date)).concat(".csv"));
-		String header[] = new String[]{"queryName", "queryResult", "queryExceptions"};
-		String columns[] = new String[]{"Query Name", "Query Result", "Query Exception"};
+		String header[] = new String[]{"queryName", "queryResult"};
+		String columns[] = new String[]{"Query Name", "Query Result"};
 
 		try {
 			if (!file.exists()) {

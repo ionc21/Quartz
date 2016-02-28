@@ -5,14 +5,14 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.quartz.service.QuartzService;
+import com.quartz.dao.QuartzDao;
 
 public class QuartzTaskScheduler {
 
 	private static boolean isRunning = false;
 
 	@Autowired
-	private QuartzService quartzService;
+	private QuartzDao quartzDao;
 
 	public void execute() throws Exception {
 		try {
@@ -37,7 +37,7 @@ public class QuartzTaskScheduler {
 		Date date = new Date();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 		System.out.println(dateFormat.format(date));
-		quartzService.executeSqlQueries();
+		quartzDao.executeSqlQueries();
 	}
 
 }
