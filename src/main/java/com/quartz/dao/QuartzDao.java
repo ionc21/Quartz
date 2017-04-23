@@ -69,6 +69,7 @@ public class QuartzDao {
 		
 		Query deleteQuery = entityManager.createNativeQuery(environment.getProperty("delete.from.user"));
 		QueryResult deleteQueryResult = new QueryResult();
+		deleteQueryResult.setQueryName("Delete Query");
 		entityManager.joinTransaction();
 		int deleteUserResult = deleteQuery.executeUpdate();
 		deleteQueryResult.setQueryResult(deleteUserResult +"");		
