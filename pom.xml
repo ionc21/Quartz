@@ -19,13 +19,13 @@
 	</repositories>
 
 	<properties>
-		<java.version>1.7</java.version>
+		<java.version>1.8</java.version>
 		<org.springframework.version>4.2.4.RELEASE</org.springframework.version>
 		<quartz.version>2.2.1</quartz.version>
 		<db.version>1.4.191</db.version>
 		<hibernate.version>5.1.0.Final</hibernate.version>
 		<csv.version>2.2.0</csv.version>
-		<java.version>1.7</java.version>
+		<plexus.version>3.1.0</plexus.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -82,6 +82,19 @@
 					<artifactId>spring-context</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<!--Plexus Util PomXHTML-->
+		<dependency>
+			<groupId>org.codehaus.plexus</groupId>
+			<artifactId>plexus-utils</artifactId>
+			<version>3.0.24</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.plexus</groupId>
+			<artifactId>plexus-utils</artifactId>
+			<version>${plexus.version}</version>
 		</dependency>
 
 		<!-- QUARTZ -->
